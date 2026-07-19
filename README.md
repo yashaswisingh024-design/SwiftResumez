@@ -1,6 +1,7 @@
-# Interactive Resume Builder
+# Swiftresumez
 
 A professional, modern, fully responsive Interactive Resume Builder built with HTML5, CSS3, and Vanilla JavaScript. 
+LIVE LINK: https://swiftresumez.netlify.app/
 
 ## Features
 
@@ -43,6 +44,10 @@ Interactive-Resume-Builder/
 - **html2canvas & jsPDF** (for PDF generation)
 - **Google Fonts** (Inter)
 - **FontAwesome** (Icons)
+
+## Screenshot
+<img width="1848" height="942" alt="Screenshot 2026-07-19 142811" src="https://github.com/user-attachments/assets/fa692799-53cc-4d40-859b-08a2b112d5a8" />
+
 
 ## How to use
 
