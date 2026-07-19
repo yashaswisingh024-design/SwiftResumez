@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Resume Builder</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navbar / Header -->
+    <header class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-file-signature"></i>
+            <h1>ResumeBuilder</h1>
+        </div>
+        <div class="progress-container">
+            <span class="progress-text">Resume Completion <span id="progress-percentage">0%</span></span>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button id="theme-toggle" class="icon-btn" aria-label="Toggle Theme" title="Toggle Theme">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+            <button id="btn-clear" class="btn btn-outline" title="Clear all data"><i class="fa-solid fa-trash"></i> Reset</button>
+            <button id="btn-download" class="btn btn-primary" title="Download PDF"><i class="fa-solid fa-download"></i> Download PDF</button>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <!-- Left Side: Form -->
+        <section class="form-section">
+            <div class="form-container">
+                <!-- Personal Info -->
+                <div class="form-group-section accordion active">
+                    <h2 class="section-title"><i class="fa-solid fa-user"></i> Personal Information <i class="fa-solid fa-chevron-down toggle-icon"></i></h2>
+                    <div class="section-content">
+                        <div class="input-grid">
+                            <div class="input-group">
+                                <label for="fullName">Full Name</label>
+                                <input type="text" id="fullName" data-preview="preview-name" placeholder="John Doe">
+                            </div>
+                            <div class="input-group">
+                                <label for="jobTitle">Professional Title</label>
+                                <input type="text" id="jobTitle" data-preview="preview-title" placeholder="Senior Frontend Developer">
+                            </div>
+                            <div class="input-group">
+                                <label for="email">Email <span class="error-msg" id="email-error"></span></label>
+                                <input type="email" id="email" data-preview="preview-email" placeholder="john@example.com">
+                            </div>
+                            <div class="input-group">
+                                <label for="phone">Phone Number <span class="error-msg" id="phone-error"></span></label>
+                                <input type="tel" id="phone" data-preview="preview-phone" placeholder="+1 234 567 8900">
+                            </div>
+                            <div class="input-group">
+                                <label for="address">Address</label>
+                                <input type="text" id="address" data-preview="preview-address" placeholder="New York, USA">
+                            </div>
+                            <div class="input-group">
+                                <label for="linkedin">LinkedIn URL</label>
+                                <input type="url" id="linkedin" data-preview="preview-linkedin" placeholder="linkedin.com/in/johndoe">
+                            </div>
+                            <div class="input-group">
+                                <label for="github">GitHub URL</label>
+                                <input type="url" id="github" data-preview="preview-github" placeholder="github.com/johndoe">
+                            </div>
+                            <div class="input-group">
+                                <label for="portfolio">Portfolio Website</label>
+                                <input type="url" id="portfolio" data-preview="preview-portfolio" placeholder="johndoe.com">
+                            </div>
+                        </div>
+                        <div class="input-group mt-3">
+                            <label for="profilePhoto">Profile Photo</label>
+                            <input type="file" id="profilePhoto" accept="image/*">
+                        </div>
+                        <div class="input-group mt-3">
+                            <label for="summary">Professional Summary</label>
+                            <textarea id="summary" rows="4" data-preview="preview-summary" placeholder="A brief summary of your professional background and goals."></textarea>
+                            <div class="char-counter"><span id="summary-counter">0</span> / 500</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Education -->
+                <div class="form-group-section accordion">
+                    <h2 class="section-title"><i class="fa-solid fa-graduation-cap"></i> Education <i class="fa-solid fa-chevron-down toggle-icon"></i></h2>
+                    <div class="section-content" id="education-container">
+                        <!-- Dynamic Education Items injected here -->
+                    </div>
+                    <button class="btn btn-outline btn-add mt-3" id="btn-add-education"><i class="fa-solid fa-plus"></i> Add Education</button>
+                </div>
+
+                <!-- Experience -->
+                <div class="form-group-section accordion">
+                    <h2 class="section-title"><i class="fa-solid fa-briefcase"></i> Experience <i class="fa-solid fa-chevron-down toggle-icon"></i></h2>
+                    <div class="section-content" id="experience-container">
+                        <!-- Dynamic Experience Items injected here -->
+                    </div>
+                    <button class="btn btn-outline btn-add mt-3" id="btn-add-experience"><i class="fa-solid fa-plus"></i> Add Experience</button>
+                </div>
+
+                <!-- Skills -->
+                <div class="form-group-section accordion">
+                    <h2 class="section-title"><i class="fa-solid fa-tools"></i> Skills <i class="fa-solid fa-chevron-down toggle-icon"></i></h2>
+                    <div class="section-content">
+                        <div class="input-group">
+                            <label for="skill-input">Add Skill</label>
+                            <div class="input-with-button">
+                                <input type="text" id="skill-input" placeholder="e.g. JavaScript, React">
+                                <button class="btn btn-primary" id="btn-add-skill"><i class="fa-solid fa-plus"></i></button>
+                            </div>
+                        </div>
+                        <div class="predefined-skills mt-3">
+                            <p class="small-label">Suggestions:</p>
+                            <div class="skill-tags" id="suggested-skills">
+                                <!-- Predefined injected here -->
+                            </div>
+                        </div>
+                        <div class="selected-items mt-3">
+                            <p class="small-label">Your Skills:</p>
+                            <div class="skill-tags" id="selected-skills-container">
+                                <!-- Added injected here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Projects -->
+                <div class="form-group-section accordion">
+                    <h2 class="section-title"><i class="fa-solid fa-project-diagram"></i> Projects <i class="fa-solid fa-chevron-down toggle-icon"></i></h2>
+                    <div class="section-content" id="projects-container">
+                        <!-- Dynamic Projects injected here -->
+                    </div>
+                    <button class="btn btn-outline btn-add mt-3" id="btn-add-project"><i class="fa-solid fa-plus"></i> Add Project</button>
+                </div>
+
+                <!-- Certifications -->
+                <div class="form-group-section accordion">
+                    <h2 class="section-title"><i class="fa-solid fa-certificate"></i> Certifications <i class="fa-solid fa-chevron-down toggle-icon"></i></h2>
+                    <div class="section-content" id="certifications-container">
+                         <!-- Dynamic Certs injected here -->
+                    </div>
+                    <button class="btn btn-outline btn-add mt-3" id="btn-add-cert"><i class="fa-solid fa-plus"></i> Add Certification</button>
+                </div>
+                
+                <!-- Languages -->
+                <div class="form-group-section accordion">
+                    <h2 class="section-title"><i class="fa-solid fa-language"></i> Languages <i class="fa-solid fa-chevron-down toggle-icon"></i></h2>
+                    <div class="section-content">
+                         <div class="input-group">
+                            <label for="lang-input">Add Language</label>
+                            <div class="input-with-button">
+                                <input type="text" id="lang-input" placeholder="e.g. English, Spanish">
+                                <button class="btn btn-primary" id="btn-add-lang"><i class="fa-solid fa-plus"></i></button>
+                            </div>
+                        </div>
+                        <div class="selected-items mt-3">
+                            <div class="skill-tags" id="selected-langs-container"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interests -->
+                <div class="form-group-section accordion">
+                    <h2 class="section-title"><i class="fa-solid fa-heart"></i> Interests <i class="fa-solid fa-chevron-down toggle-icon"></i></h2>
+                    <div class="section-content">
+                        <div class="input-group">
+                            <label for="interest-input">Add Interest</label>
+                            <div class="input-with-button">
+                                <input type="text" id="interest-input" placeholder="e.g. Reading, Traveling">
+                                <button class="btn btn-primary" id="btn-add-interest"><i class="fa-solid fa-plus"></i></button>
+                            </div>
+                        </div>
+                        <div class="selected-items mt-3">
+                            <div class="skill-tags" id="selected-interests-container"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Side: Preview -->
+        <section class="preview-section">
+            <div class="resume-paper" id="resume-preview">
+                <!-- Header -->
+                <div class="resume-header">
+                    <div class="resume-photo" id="preview-photo-container" style="display: none;">
+                        <img src="" alt="Profile" id="preview-photo">
+                    </div>
+                    <div class="resume-header-text">
+                        <h1 id="preview-name">Your Name</h1>
+                        <h3 id="preview-title">Professional Title</h3>
+                        <div class="resume-contact">
+                            <span class="contact-item"><i class="fa-solid fa-envelope"></i> <span id="preview-email">email@example.com</span></span>
+                            <span class="contact-item"><i class="fa-solid fa-phone"></i> <span id="preview-phone">+1 234 567 8900</span></span>
+                            <span class="contact-item"><i class="fa-solid fa-location-dot"></i> <span id="preview-address">Location</span></span>
+                            <span class="contact-item" id="preview-linkedin-container" style="display:none;"><i class="fa-brands fa-linkedin"></i> <span id="preview-linkedin">LinkedIn</span></span>
+                            <span class="contact-item" id="preview-github-container" style="display:none;"><i class="fa-brands fa-github"></i> <span id="preview-github">GitHub</span></span>
+                            <span class="contact-item" id="preview-portfolio-container" style="display:none;"><i class="fa-solid fa-globe"></i> <span id="preview-portfolio">Portfolio</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="resume-body">
+                    <!-- Left Column -->
+                    <div class="resume-main">
+                        <!-- Summary -->
+                        <div class="resume-section" id="section-summary">
+                            <h4 class="resume-section-title">Profile</h4>
+                            <p id="preview-summary" class="resume-text">Your professional summary will appear here.</p>
+                        </div>
+
+                        <!-- Experience -->
+                        <div class="resume-section" id="section-experience" style="display:none;">
+                            <h4 class="resume-section-title">Experience</h4>
+                            <div id="preview-experience-list">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Projects -->
+                        <div class="resume-section" id="section-projects" style="display:none;">
+                            <h4 class="resume-section-title">Projects</h4>
+                            <div id="preview-projects-list">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                        
+                        <!-- Education -->
+                        <div class="resume-section" id="section-education" style="display:none;">
+                            <h4 class="resume-section-title">Education</h4>
+                            <div id="preview-education-list">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column (Sidebar) -->
+                    <div class="resume-sidebar">
+                        <!-- Skills -->
+                        <div class="resume-section" id="section-skills" style="display:none;">
+                            <h4 class="resume-section-title">Skills</h4>
+                            <ul class="resume-skills-list" id="preview-skills-list">
+                                <!-- Populated dynamically -->
+                            </ul>
+                        </div>
+
+                        <!-- Certifications -->
+                        <div class="resume-section" id="section-certifications" style="display:none;">
+                            <h4 class="resume-section-title">Certifications</h4>
+                            <div id="preview-certifications-list">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Languages -->
+                        <div class="resume-section" id="section-languages" style="display:none;">
+                            <h4 class="resume-section-title">Languages</h4>
+                            <ul class="resume-skills-list" id="preview-languages-list">
+                                <!-- Populated dynamically -->
+                            </ul>
+                        </div>
+
+                        <!-- Interests -->
+                        <div class="resume-section" id="section-interests" style="display:none;">
+                            <h4 class="resume-section-title">Interests</h4>
+                            <ul class="resume-skills-list" id="preview-interests-list">
+                                <!-- Populated dynamically -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal for Confirmation -->
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content">
+            <h3>Are you sure?</h3>
+            <p>This will permanently delete all your resume data. This action cannot be undone.</p>
+            <div class="modal-actions">
+                <button class="btn btn-outline" id="btn-cancel-clear">Cancel</button>
+                <button class="btn btn-danger" id="btn-confirm-clear">Yes, Clear All</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+    
+    <!-- Scroll to Top -->
+    <button id="scroll-top" class="scroll-top-btn"><i class="fa-solid fa-arrow-up"></i></button>
+
+    <!-- Scripts: html2canvas & jsPDF for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
